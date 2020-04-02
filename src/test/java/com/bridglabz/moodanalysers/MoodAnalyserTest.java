@@ -1,8 +1,12 @@
 package com.bridglabz.moodanalysers;
 
 import com.bridglabz.moodanalysers.exceptions.MoodAnalyserException;
+import com.bridglabz.moodanalysers.factory.MoodAnalyserFactory;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class MoodAnalyserTest {
     @Test
@@ -51,5 +55,27 @@ public class MoodAnalyserTest {
             Assert.assertEquals("Mood should not be empty", moodAnalysisException.getMessage());
         }
     }
+
+    @Test
+    public void givenObject_WhenEquals_shouldReturnObject() throws MoodAnalyserException {
+        try {
+                Constructor constructor = Class.forName("com.bridglabz.moodanalyser.MoodAnalyser")
+                        .getConstructor(String.class);
+                Object reflectionObject = constructor.newInstance("I am in Sad Mood");
+                MoodAnalyser moodAnalyser = (MoodAnalyser) reflectionObject;
+                MoodAnalyser realMoodObject = new MoodAnalyser("I am in Sad Mood");
+                boolean result = realMoodObject.equals(moodAnalyser);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
 }
 
