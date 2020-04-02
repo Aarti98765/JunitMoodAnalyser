@@ -1,5 +1,6 @@
 package com.bridglabz.moodanalysers;
 
+import com.bridglabz.moodanalysers.exceptions.MoodAnalyserException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,4 +17,11 @@ public class MoodAnalyserTest {
         String mood = moodAnalyser.getMood("I am in any mood");
         Assert.assertEquals("HAPPY", mood);
     }
+
+    @Test
+    public void givenSadMessageInConstructor_whenGetMood_shouldReturnSadMood() throws MoodAnalyserException {
+        MoodAnalyser moodAnalyser = new MoodAnalyser("I am in sad mood");
+        Assert.assertEquals("SAD",moodAnalyser.analyseMood());
+    }
 }
+
