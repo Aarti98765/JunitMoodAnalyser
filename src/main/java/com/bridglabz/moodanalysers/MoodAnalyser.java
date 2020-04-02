@@ -22,11 +22,13 @@ public class MoodAnalyser {
 
     public String analyseMood() throws MoodAnalyserException {
         try {
-            if (message.contains("sad"))
+            if(message.length()== 0)
+                throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.EMTY,"Mood should not be empty");
+            else if(message.contains("sad"))
                 return "SAD";
             return "HAPPY";
         } catch (NullPointerException nullPointerException) {
-            throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.CLASSNOTFOUND, "Invalid Message");
+            throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.NULL, "Invalid Message");
         }
     }
 
