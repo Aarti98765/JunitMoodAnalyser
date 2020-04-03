@@ -5,10 +5,8 @@ import com.bridglabz.moodanalysers.factory.MoodAnalyserFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
 
 public class MoodAnalyserTest {
     @Test
@@ -42,12 +40,10 @@ public class MoodAnalyserTest {
         try {
             MoodAnalyser moodAnalyser = new MoodAnalyser(null);
             String mood = moodAnalyser.analyseMood();
-        }
-        catch (MoodAnalyserException moodAnalysisException) {
+        } catch (MoodAnalyserException moodAnalysisException) {
             Assert.assertEquals("Invalid Message", moodAnalysisException.getMessage());
         }
     }
-
     @Test
     public void givenEmptyMessage_whenAnalyseMood_shouldThrowMoodAnalysisExceptionEmpty() {
         try {
@@ -57,66 +53,36 @@ public class MoodAnalyserTest {
             Assert.assertEquals("Mood should not be empty", moodAnalysisException.getMessage());
         }
     }
-
     @Test
-    public void givenObject_WhenEquals_shouldReturnObject() throws MoodAnalyserException {
-        try {
-                Constructor constructor = Class.forName("com.bridglabz.moodanalysers.MoodAnalyser")
-                        .getConstructor(String.class);
-                Object reflectionObject = constructor.newInstance("I am in Sad Mood");
-                MoodAnalyser moodAnalyser = (MoodAnalyser) reflectionObject;
-                MoodAnalyser realMoodObject = new MoodAnalyser("I am in Sad Mood");
-                boolean result = realMoodObject.equals(moodAnalyser);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
+    public void givenMoodAnalyser_whenProper_shouldReturnObject() {
+        MoodAnalyser moodAnalyserObject = MoodAnalyserFactory.getMoodAnalyserObject();
+        MoodAnalyser moodAnalyser = new MoodAnalyser();
+        Assert.assertTrue(moodAnalyser.equals(moodAnalyserObject));
     }
     @Test
-    public void givenMoodAnalysers_whenImProper_shouldThrowClassNotFoundException() throws NoSuchMethodException, ClassNotFoundException {
-        try {
-            Constructor constructor = Class.forName("com.bridglabz.MoodAnalyser")
-                    .getConstructor(String.class);
-            Object reflectionObject = constructor.newInstance("I am in Sad Mood");
-            MoodAnalyser moodAnalysers = (MoodAnalyser) reflectionObject;
-            MoodAnalyser realMoodObject = new MoodAnalyser("I am in Sad Mood");
-            boolean result = realMoodObject.equals(moodAnalysers);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            Assert.assertEquals("com.bridglabzs.MoodAnalyser",e.getMessage());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+    public void givenMoodAnalyser_whenImProper_shouldThrowClassNotFoundException() {
+        MoodAnalyser moodAnalyserObject = null;
+        try{
+            moodAnalyserObject = MoodAnalyserFactory.getMoodAnalyserObject("com.bridgelabz.MoodAnalyser");
+            MoodAnalyser moodAnalyser = new MoodAnalyser();
+        } catch (MoodAnalyserException moodAnalysisException){
+            Assert.assertEquals("Invalid class name", moodAnalysisException.getMessage());
         }
     }
     @Test
-    public void givenMoodAnalysers_whenImProper_shouldThrowNoSuchMethodException() throws NoSuchMethodException, ClassNotFoundException {
+    public void givenMoodAnalyser_whenImProperConstructorParameters_shouldThrowNoSuchMethodException() {
         try {
-            Constructor constructor = Class.forName("com.bridglabz.moodanalyser.MoodAnalysers")
-                    .getConstructor(String.class);
-            Object reflectionObject = constructor.newInstance("I am in Sad Mood",2);
-            MoodAnalyser moodAnalysers = (MoodAnalyser) reflectionObject;
-            MoodAnalyser realMoodObject = new MoodAnalyser("I am in Sad Mood");
-            boolean result = realMoodObject.equals(moodAnalysers);
+            Constructor constructor = Class.forName("com.bridglabz.moodanalysers.MoodAnalyser").getConstructor(
+                    String.class, Integer.class);
+            Object reflectionObject = constructor.newInstance("I am in sad mood", 2);
+            MoodAnalyser moodAnalyser = (MoodAnalyser) reflectionObject;
+            MoodAnalyser realMoodObject = new MoodAnalyser("I am in sad mood");
         } catch (NoSuchMethodException e) {
             try {
-                throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.CLASSNOTFOUND,
-                        "invalid constructor");
-            }
-            catch (MoodAnalyserException moodAnalysereException)
-            {
-                Assert.assertEquals("invalid constructor", moodAnalysereException.getMessage());
+                throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.NOSUCHMETHOD,
+                        "Invalid constructor");
+            }catch (MoodAnalyserException moodAnalysisException) {
+                Assert.assertEquals("Invalid constructor", moodAnalysisException.getMessage());
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -127,11 +93,6 @@ public class MoodAnalyserTest {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-    }
-    @Test
-    public void givenMoodAnalyserObject_WithParameter_shouldReturnMoodAnalyserObject_() {
-        Serializable moodAnalyserObject = MoodAnalyserFactory.getMoodAnalyserObject();
-        Assert.assertEquals(true, moodAnalyserObject);
     }
 }
 
