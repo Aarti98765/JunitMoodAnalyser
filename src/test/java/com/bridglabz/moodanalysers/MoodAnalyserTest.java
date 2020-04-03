@@ -59,7 +59,7 @@ public class MoodAnalyserTest {
     @Test
     public void givenObject_WhenEquals_shouldReturnObject() throws MoodAnalyserException {
         try {
-                Constructor constructor = Class.forName("com.bridglabz.moodanalyser.MoodAnalyser")
+                Constructor constructor = Class.forName("com.bridglabz.moodanalysers.MoodAnalyser")
                         .getConstructor(String.class);
                 Object reflectionObject = constructor.newInstance("I am in Sad Mood");
                 MoodAnalyser moodAnalyser = (MoodAnalyser) reflectionObject;
@@ -78,27 +78,7 @@ public class MoodAnalyserTest {
             }
         }
 
-    @Test
-    public void givenMoodAnalysers_whenImProper_shouldThrowClassNotFoundException() throws NoSuchMethodException, ClassNotFoundException {
-        try {
-            Constructor constructor = Class.forName("com.bridglabz.MoodAnalyser")
-                    .getConstructor(String.class);
-            Object reflectionObject = constructor.newInstance("I am in Sad Mood");
-            MoodAnalyser moodAnalysers = (MoodAnalyser) reflectionObject;
-            MoodAnalyser realMoodObject = new MoodAnalyser("I am in Sad Mood");
-            boolean result = realMoodObject.equals(moodAnalysers);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            Assert.assertEquals("com.bridglabz.MoodAnalyser",e.getMessage());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 }
 
