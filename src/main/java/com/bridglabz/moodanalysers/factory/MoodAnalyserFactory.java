@@ -1,14 +1,13 @@
 package com.bridglabz.moodanalysers.factory;
 
 import com.bridglabz.moodanalysers.MoodAnalyser;
-import com.bridglabz.moodanalysers.exceptions.MoodAnalyserException;
 
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 public class MoodAnalyserFactory {
-    MoodAnalyser moodAnalyser;
-    public static MoodAnalyser getMoodAnalyserObject() {
+    public static Serializable getMoodAnalyserObject() {
         try {
             Constructor constructor = Class.forName("com.bridglabz.moodanalysers.MoodAnalyser")
                     .getConstructor(String.class);
@@ -16,6 +15,7 @@ public class MoodAnalyserFactory {
             MoodAnalyser moodAnalysers = (MoodAnalyser) reflectionObject;
             MoodAnalyser realMoodObject = new MoodAnalyser("I am in Sad Mood");
             boolean result = realMoodObject.equals(moodAnalysers);
+            return result;
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

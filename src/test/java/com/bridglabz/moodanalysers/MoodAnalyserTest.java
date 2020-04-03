@@ -5,8 +5,10 @@ import com.bridglabz.moodanalysers.factory.MoodAnalyserFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 public class MoodAnalyserTest {
     @Test
@@ -125,6 +127,11 @@ public class MoodAnalyserTest {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+    @Test
+    public void givenMoodAnalyserObject_WithParameter_shouldReturnMoodAnalyserObject_() {
+        Serializable moodAnalyserObject = MoodAnalyserFactory.getMoodAnalyserObject();
+        Assert.assertEquals(true, moodAnalyserObject);
     }
 }
 
