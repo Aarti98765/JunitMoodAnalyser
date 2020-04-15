@@ -4,6 +4,7 @@ import com.bridglabz.moodanalysers.MoodAnalyser;
 import com.bridglabz.moodanalysers.exceptions.MoodAnalyserException;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -47,6 +48,18 @@ public class MoodAnalyserFactory {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void moodAnalyserField(Object object, String message, String fieldValue) throws MoodAnalyserException {
+        try {
+            Class<?> classObject = object.getClass();
+            Field declaredField = classObject.getDeclaredField(message);
+            declaredField.set(object,fieldValue);
+        } catch (NoSuchFieldException e) {
+            throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.NOSUCHFIELD, "Field not found");
+        } catch (IllegalAccessException e) {
+            throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.ILLEGALACCESSEXCEPTION, "Message should not be null");
+        }
     }
 }
 
