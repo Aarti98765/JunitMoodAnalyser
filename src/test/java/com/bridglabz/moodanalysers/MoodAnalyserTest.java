@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public class MoodAnalyserTest {
+
     @Test
     public void givenSadMessage_whenGetMood_shouldReturnSadMood() {
         MoodAnalyser moodAnalyser = new MoodAnalyser();
@@ -44,6 +45,7 @@ public class MoodAnalyserTest {
             Assert.assertEquals("Invalid Message", moodAnalysisException.getMessage());
         }
     }
+
     @Test
     public void givenEmptyMessage_whenAnalyseMood_shouldThrowMoodAnalysisExceptionEmpty() {
         try {
@@ -53,45 +55,37 @@ public class MoodAnalyserTest {
             Assert.assertEquals("Mood should not be empty", moodAnalysisException.getMessage());
         }
     }
+
     @Test
-    public void givenMoodAnalyser_whenProper_shouldReturnObject() {
-        MoodAnalyser moodAnalyserObject = MoodAnalyserFactory.getMoodAnalyserObject();
-        MoodAnalyser moodAnalyser = new MoodAnalyser();
-        Assert.assertTrue(moodAnalyser.equals(moodAnalyserObject));
+    public void givenMoodAnalyser_whenProper_shouldReturnObject() throws MoodAnalyserException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        MoodAnalyser moodAnalyser = new MoodAnalyser("Hello");
+        Constructor constructor = MoodAnalyserFactory.getConstructor("MoodAnalyser",String.class);
+        MoodAnalyser moodAnalyserObject = MoodAnalyserFactory.getMoodAnalyserObject(constructor,"Hello");
+        boolean result = moodAnalyser.equals(moodAnalyserObject);
+        Assert.assertTrue("true",result);
     }
+
     @Test
-    public void givenMoodAnalyser_whenImProper_shouldThrowClassNotFoundException() {
+    public void givenMoodAnalyser_whenImProper_shouldThrowClassNotFoundException() throws IllegalAccessException, InstantiationException, InvocationTargetException {
         MoodAnalyser moodAnalyserObject = null;
         try{
-            moodAnalyserObject = MoodAnalyserFactory.getMoodAnalyserObject("com.bridgelabz.MoodAnalyser");
-            MoodAnalyser moodAnalyser = new MoodAnalyser();
+            MoodAnalyserFactory.getConstructor("MoodAnalysers",String.class);
         } catch (MoodAnalyserException moodAnalysisException){
             Assert.assertEquals("Invalid class name", moodAnalysisException.getMessage());
         }
     }
+
     @Test
-    public void givenMoodAnalyser_whenImProperConstructorParameters_shouldThrowNoSuchMethodException() {
+    public void givenMoodAnalyser_whenImProperConstructorParameters_shouldThrowNoSuchMethodException() throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
         try {
-            Constructor constructor = Class.forName("com.bridglabz.moodanalysers.MoodAnalyser").getConstructor(
-                    String.class, Integer.class);
-            Object reflectionObject = constructor.newInstance("I am in sad mood", 2);
-            MoodAnalyser moodAnalyser = (MoodAnalyser) reflectionObject;
-            MoodAnalyser realMoodObject = new MoodAnalyser("I am in sad mood");
-        } catch (NoSuchMethodException e) {
+                MoodAnalyserFactory.getConstructor("MoodAnalyser",String.class, Integer.class);
+        } catch (MoodAnalyserException e) {
             try {
                 throw new MoodAnalyserException(MoodAnalyserException.ExceptionType.NOSUCHMETHOD,
                         "Invalid constructor");
-            }catch (MoodAnalyserException moodAnalysisException) {
+            } catch (MoodAnalyserException moodAnalysisException) {
                 Assert.assertEquals("Invalid constructor", moodAnalysisException.getMessage());
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
         }
     }
 }
